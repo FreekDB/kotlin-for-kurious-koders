@@ -12,7 +12,7 @@ fun main() {
     // Mutable variable with type inference (Int).
     var kotlinReasons = 4
     kotlinReasons += 6
-    println("Kotlin reasons: $kotlinReasons (+ counting).")
+    println("Kotlin reasons: $kotlinReasons (and counting).")
 
 
     println()
