@@ -1,4 +1,4 @@
-package com.github.freekdb.kotlinintro.step02
+package com.github.freekdb.kotlin.workshop.step02
 
 import kotlin.time.ExperimentalTime
 import kotlin.time.minutes
@@ -10,7 +10,7 @@ fun main() {
     println("Workshop: ${workshopDuration.inHours} hours.")
 
     // Mutable variable with type inference (Int).
-    var kotlinReasons = 4
+    var kotlinReasons = 3
     kotlinReasons += 6
     println("Kotlin reasons: $kotlinReasons (and counting).")
 
