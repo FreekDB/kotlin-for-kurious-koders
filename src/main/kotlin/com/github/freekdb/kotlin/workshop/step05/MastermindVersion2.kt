@@ -1,7 +1,11 @@
-package com.github.freekdb.kotlinintro.mastermind
+package com.github.freekdb.kotlin.workshop.step05
 
 // Code-breaking game: https://en.wikipedia.org/wiki/Mastermind_(board_game)
+// Additional information: http://mathworld.wolfram.com/Mastermind.html
 // Implementation inspired by: http://www.rosettacode.org/wiki/Mastermind#Python
+
+// https://www.coursera.org/learn/kotlin-for-java-developers/programming/vmwVT/mastermind-game
+
 
 private const val MINIMUM_LETTER_COUNT = 2
 private const val MAXIMUM_LETTER_COUNT = 20
@@ -10,15 +14,17 @@ private const val MAXIMUM_CODE_LENGTH = 10
 
 fun main() {
     val (letters, code) = initializeGame()
-    runGame(code, letters)
+    runGame(letters, code)
 }
 
 private fun initializeGame(): Pair<String, String> {
-    println("Welcome to Mastermind. You are challenged to guess a random code!")
-    println("In response to each guess, you will receive a hint.")
-    println("In this hint, an X means you guessed that letter correctly.")
-    println("An O means that letter is in the code, but in a different position.")
-    println()
+    println("""
+        |Welcome to Mastermind. You are challenged to guess a random code!
+        |In response to each guess, you will receive a hint.
+        |In this hint, an X means you guessed that letter correctly.
+        |An O means that letter is in the code, but in a different position.
+        
+    """.trimMargin())
 
     val letterCount = readNumber("Select a number of possible letters for the code",
                                  MINIMUM_LETTER_COUNT, MAXIMUM_LETTER_COUNT)
@@ -44,7 +50,7 @@ private fun readNumber(prompt: String, minimum: Int, maximum: Int): Int {
     return number
 }
 
-private fun runGame(code: String, letters: String) {
+private fun runGame(letters: String, code: String) {
     val guesses = mutableListOf<String>()
 
     var finished = false
@@ -72,7 +78,16 @@ private fun runGame(code: String, letters: String) {
     }
 }
 
+// A black key peg ("X") is placed for each code peg from the guess which is correct in both color and position ("cc-cp").
+// A white key peg ("O") indicates the existence of a correct color code peg placed in the wrong position ("cc-wp").
 private fun encode(code: String, guess: String): String =
     code
         .zip(guess)
-        .joinToString(" ") { if (it.first == it.second) "X" else if (it.second in code) "O" else "-" }
+        .map { if (it.first == it.second) "cc-cp" else if (it.second in code) "cc-wp" else "wc-wp" }
+        .sorted()
+        .map { when(it) {
+            "cc-cp" -> "X"
+            "cc-wp" -> "O"
+            else -> "-"
+        } }
+        .joinToString(" ")
