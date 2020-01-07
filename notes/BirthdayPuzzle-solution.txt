@@ -1,0 +1,20 @@
+/**
+ * A puzzle: Calvin and Hobbes are celebrating their birthdays.
+ *
+ * One is '44' in base a,
+ * the other is '55' in base b,
+ * the sum of their ages is '77' in base c and
+ * the difference is '111' in base d.
+ * d < a < b < c and all are natural numbers.
+ * Hobbes is younger than Calvin.
+ *
+ * P.S. The names of my colleagues have been replaced by those of two famous
+ * last century cartoon characters:
+ * "Calvin and Hobbes follows the humorous antics of the title characters:
+ * Calvin, a precocious, mischievous and adventurous six-year-old boy; and
+ * Hobbes, his sardonic stuffed tiger."
+ * https://en.wikipedia.org/wiki/Calvin_and_Hobbes
+ */
+
+// Ages were 32 and 45, so the sum is 77 and the difference is 13.
+// Bases should be a: 7, b: 8, c: 10, and d: 3.
