@@ -35,8 +35,6 @@ class StepsPanel(private val threadCount: Int, private val startDateTime: LocalD
         super.paintComponent(graphics)
 
         if (graphics != null) {
-            graphics.font = Font("Sans Serif", Font.BOLD, 28)
-
             paintThreadHeaders(graphics)
             paintStepsInTime(graphics)
             paintProgressTaskSteps(graphics)
@@ -44,6 +42,8 @@ class StepsPanel(private val threadCount: Int, private val startDateTime: LocalD
     }
 
     private fun paintThreadHeaders(graphics: Graphics) {
+        graphics.font = Font("Sans Serif", Font.BOLD, 28)
+
         for (threadNumber in 1..threadCount) {
             val x = left + (threadNumber - 1) * columnWidth
             val y = top
@@ -64,19 +64,29 @@ class StepsPanel(private val threadCount: Int, private val startDateTime: LocalD
                 val endTime = timeOffset(startDateTime, it.endTime)
                 val x = left + (it.threadNumber - 1) * columnWidth
                 val y = top + 70 + (startTime / timeDivisor).toInt()
+                val width = 60
                 val height = ((endTime - startTime - 28) / timeDivisor).toInt()
                 val colorIndex = it.taskId - 1
 
                 graphics.color = BASIC_COLORS[colorIndex]
-                graphics.fill3DRect(x, y, 60, height, true)
+                graphics.fill3DRect(x, y, width, height, true)
 
                 graphics.color = Color.BLACK
-                graphics.drawString(it.stepNumber.toString(), x + 20, y + height / 2 + 10)
-            }
 
+                graphics.font = Font("Sans Serif", Font.BOLD, 28)
+                val yOffset = if (height <= 70) 28 else height / 2 + 10
+                graphics.drawString(it.stepNumber.toString(), x + 20, y + yOffset)
+
+                graphics.font = Font("Sans Serif", Font.BOLD, 12)
+                val fibonacciNumberLength = it.result.toString().length.toString()
+                val xOffset = (width - graphics.fontMetrics.stringWidth(fibonacciNumberLength)) / 2
+                graphics.drawString(fibonacciNumberLength, x + xOffset - 2, y + height - 10)
+            }
     }
 
     private fun paintProgressTaskSteps(graphics: Graphics) {
+        graphics.font = Font("Sans Serif", Font.BOLD, 28)
+
         executedSteps
             .filter { it.stepNumber > 0 }
             .forEach {

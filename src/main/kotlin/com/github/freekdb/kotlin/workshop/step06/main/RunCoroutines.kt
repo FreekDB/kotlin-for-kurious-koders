@@ -38,15 +38,15 @@ fun main() {
 }
 
 suspend fun runTask(taskId: Int) {
-    updateExecutedStep(taskId, 0, LocalDateTime.now())
+    updateExecutedStep(taskId, 0, LocalDateTime.now(), 0.toBigInteger())
     yield()
 
     repeat(STEP_COUNT) {
         val startDateTime = LocalDateTime.now()
 
-        fibonacci((2000000 + it * taskId * 160000) / TASK_COUNT)
+        val result = fibonacci((2000000 + it * taskId * 160000) / TASK_COUNT)
 
-        updateExecutedStep(taskId, it + 1, startDateTime)
+        updateExecutedStep(taskId, it + 1, startDateTime, result)
         yield()
     }
 }
@@ -64,8 +64,10 @@ private fun fibonacci(index: Int): BigInteger {
     return number1
 }
 
-suspend fun updateExecutedStep(taskId: Int, stepNumber: Int, startDateTime: LocalDateTime) {
-    updateChannel.send(ExecutedStep(determineThreadNumber(), taskId, stepNumber, startDateTime, LocalDateTime.now()))
+suspend fun updateExecutedStep(taskId: Int, stepNumber: Int, startDateTime: LocalDateTime, result: BigInteger) {
+    updateChannel.send(
+        ExecutedStep(determineThreadNumber(), taskId, stepNumber, startDateTime, LocalDateTime.now(), result)
+    )
 }
 
 private fun determineThreadNumber(): Int {
@@ -76,4 +78,4 @@ private fun determineThreadNumber(): Int {
 
 
 data class ExecutedStep(val threadNumber: Int, val taskId: Int, val stepNumber: Int,
-                        val startTime: LocalDateTime, val endTime: LocalDateTime)
+                        val startTime: LocalDateTime, val endTime: LocalDateTime, val result: BigInteger)
