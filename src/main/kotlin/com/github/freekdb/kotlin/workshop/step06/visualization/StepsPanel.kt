@@ -22,8 +22,7 @@ class StepsPanel(private val threadCount: Int, private val startDateTime: LocalD
     }
 
     fun updateExecutedStep(executedStep: ExecutedStep) {
-        executedSteps += ExecutedStep(executedStep.threadNumber, executedStep.taskId, executedStep.stepNumber,
-                executedStep.startTime, executedStep.endTime)
+        executedSteps += executedStep
 
         SwingUtilities.invokeAndWait {
             repaint()
@@ -59,37 +58,37 @@ class StepsPanel(private val threadCount: Int, private val startDateTime: LocalD
 
     private fun paintStepsInTime(graphics: Graphics) {
         executedSteps
-                .filter { it.stepNumber > 0 }
-                .forEach {
-                    val startTime = timeOffset(startDateTime, it.startTime)
-                    val endTime = timeOffset(startDateTime, it.endTime)
-                    val x = left + (it.threadNumber - 1) * columnWidth
-                    val y = top + 70 + (startTime / timeDivisor).toInt()
-                    val height = ((endTime - startTime - 28) / timeDivisor).toInt()
-                    val colorIndex = it.taskId - 1
+            .filter { it.stepNumber > 0 }
+            .forEach {
+                val startTime = timeOffset(startDateTime, it.startTime)
+                val endTime = timeOffset(startDateTime, it.endTime)
+                val x = left + (it.threadNumber - 1) * columnWidth
+                val y = top + 70 + (startTime / timeDivisor).toInt()
+                val height = ((endTime - startTime - 28) / timeDivisor).toInt()
+                val colorIndex = it.taskId - 1
 
-                    graphics.color = BASIC_COLORS[colorIndex]
-                    graphics.fill3DRect(x, y, 60, height, true)
+                graphics.color = BASIC_COLORS[colorIndex]
+                graphics.fill3DRect(x, y, 60, height, true)
 
-                    graphics.color = Color.BLACK
-                    graphics.drawString(it.stepNumber.toString(), x + 20, y + height / 2 + 10)
-                }
+                graphics.color = Color.BLACK
+                graphics.drawString(it.stepNumber.toString(), x + 20, y + height / 2 + 10)
+            }
 
     }
 
     private fun paintProgressTaskSteps(graphics: Graphics) {
         executedSteps
-                .filter { it.stepNumber > 0 }
-                .forEach {
-                    val x = middle + (it.taskId - 1) * columnWidth
-                    val y = top + 560 + it.stepNumber * 40
-                    val colorIndex = it.taskId - 1
+            .filter { it.stepNumber > 0 }
+            .forEach {
+                val x = middle + (it.taskId - 1) * columnWidth
+                val y = top + 560 + it.stepNumber * 40
+                val colorIndex = it.taskId - 1
 
-                    graphics.color = BASIC_COLORS[colorIndex]
-                    graphics.fill3DRect(x, y, 60, 32, true)
+                graphics.color = BASIC_COLORS[colorIndex]
+                graphics.fill3DRect(x, y, 60, 32, true)
 
-                    graphics.color = Color.BLACK
-                    graphics.drawString(it.stepNumber.toString(), x + 20, y + 28)
-                }
+                graphics.color = Color.BLACK
+                graphics.drawString(it.stepNumber.toString(), x + 20, y + 28)
+            }
     }
 }
